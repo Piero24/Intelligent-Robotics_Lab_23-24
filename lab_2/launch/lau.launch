@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+    <node name ="station1" pkg="lab_2" type="example3_b" args="1 2" output="screen"/>
+    <node name ="station2" pkg="lab_2" type="example3_b" args="2 3" output="screen"/>
+    <node name ="station3" pkg="lab_2" type="example3_b" args="3 5" output="screen"/>
+    <node name ="station4" pkg="lab_2" type="example3_b" args="4 1" output="screen"/>
+    <node name ="station5" pkg="lab_2" type="example3_b" args="5 4" output="screen"/>
+</launch>
