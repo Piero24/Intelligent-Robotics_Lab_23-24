@@ -1,0 +1,11 @@
+#goal definition
+std_msgs/Header h
+int32 max
+---
+#result definition
+std_msgs/Header h
+bool reached
+---
+#feedback
+std_msgs/Header h
+int32 level
