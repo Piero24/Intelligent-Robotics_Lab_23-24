@@ -1,0 +1,79 @@
+# Exercise 4
+
+Implementation of ROS package for the exercise n.4 
+
+Group: 19
+
+* Agostini Francesco (francesco.agostini.5@studenti.unipd.it)
+* Felline Andrea (andrea.felline@studenti.unipd.it)
+* Pietrobon Andrea (andrea.pietrobon.4@studenti.unipd.it)
+
+## Theoretical answers
+
+* Can you say in advance the size of the vector of data coming from laser scan?
+
+>yes, the size is: 720
+>$$ size = { (angle_{max}) - (angle_{min}) \over angle_{decrement}} $$
+
+* Do you know how to convert polar coordinates [angle,distance] into 2D metric coordinates [X,Y]?
+
+>Yes, given a vector with angle(θ) and distance(r) the cartesian conversion formula is:
+>* x = r × cos( θ )
+>* y = r × sin( θ )
+
+## Implementation of the solution
+
+Our solution aims to manage as far as possible the data read by the laser scanner in the form of a point in polar coordinates, and then convert it into Cartesian coordinates only when necessary, in order to reduce the computational requirements.
+We have therefore implemented a class src/PolarPoint which has *distance* and *angle* of the point as members, and implements a series of static methods to be applied if necessary on collections of points in polar form.
+We therefore divided the parsing of the message received from the laser scanner into two tasks. 
+
+* The first task deals with identifying the foot, filtering the signal from the _(inf)_ points and keeping only the profiles of the objects detected by the sensor. Each collection of points interspersed with _(inf)_ is then identified as a foot, and the median over the profile distance is taken as the foot reference point. The output of this task is a vector of _PolarPoint_ that represents the feet position.
+
+* The second task instead deals with identifying people, this is implemented by collecting as input the collection produced by the first task (vector of feet), which are grouped into pairs based on the minimum distance, identifying people as pairs of nearby feet. 
+
+At the end of the task for each pair of points, the Cartesian midpoint between the two feet is calculated as the person's identifier.
+
+## Requirements
+
+This implementation has been tested with the following setup:
+
+* Ubuntu 20.04 LTS
+* ROS Noetic 
+
+## Installation
+
+To install the package in your workspace you should be in your katkin workspace, copy the Es_4_group_19.zip in the src folder and unzip.
+
+```bash
+cd $YOUR_KATKIN_WS/src
+cp $PKG_SOURCE_DIR/Es_4_group_19.zip ./
+unzip Es_4_group_19.zip
+```
+
+## Package build
+
+```bash
+cd $YOUR_KATKIN_WS/src
+source ~/.bashrc
+catkin build
+```
+
+## Usage
+
+Launch roscore and the .bag file simulation
+
+```bash
+cd $YOUR_KATKIN_WS/src/
+rosbag $BAG_SOURCE_DIR/bag_es_5.bag -l --pause
+```
+
+Start the package:
+```bash
+cd $YOUR_KATKIN_WS/src/
+source ~/.bashrc
+rosrun exercise_4 exercise_4
+```
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
